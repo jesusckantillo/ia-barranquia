@@ -7,8 +7,8 @@ import seaborn as sns
 sns.set() # Use seaborn's default style to make attractive graphs
 plt.rcParams['figure.dpi'] = 100 # Show nicely large images in this notebook
 
-snd1 = parselmouth.Sound("botbueno.wav")
-snd2 = parselmouth.Sound("xd.wav")
+snd1 = parselmouth.Sound("output.mp3")
+snd2 = parselmouth.Sound("in2.wav")
 def draw_spectrogram(spectrogram, dynamic_range=70):
     X, Y = spectrogram.x_grid(), spectrogram.y_grid()
     sg_db = 10 * np.log10(spectrogram.values)
