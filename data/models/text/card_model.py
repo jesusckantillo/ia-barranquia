@@ -1,7 +1,8 @@
 from pydantic import BaseModel
+
 from typing import List
 
 class TextCard(BaseModel):
-    word: str
+    audio: bytes
     translations: List[str] = []
     examples: List[str] = []
