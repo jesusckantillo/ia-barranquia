@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from pathlib import Path
 from services.ai_services.gemini_controller import  gemini_model
 from services.audio_services.eleven_labs import sound_generator
-from models.text.text_model import TextModel, WordToAudio
+from models.text.text_model import TextModel
 
 
 router = APIRouter()
