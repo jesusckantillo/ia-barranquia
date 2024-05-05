@@ -24,11 +24,11 @@ class GeminiModel:
         response = self.gemini_model.generate_content(prompt)
         lista = response.text.splitlines()
         lista_filtrada = list(filter(None, lista))
-        print(lista_filtrada[2:])
+        print(lista_filtrada)
         card = TextCard(
             translations = lista_filtrada[0],
             pronuntations = lista_filtrada[1],
-            examples = lista_filtrada[2]
+            examples = lista_filtrada[2:]
         )
         return card
 
@@ -38,4 +38,3 @@ load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 gemini_model = GeminiModel(api_key=API_KEY)
-print(gemini_model.generate_text_card("Wash"))
