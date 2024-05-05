@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from pathlib import Path
 from services.ai_services.gemini_controller import  gemini_model
 from services.audio_services.eleven_labs import sound_generator
-
+from models.text.text_model import TextModel
 
 
 router = APIRouter()
@@ -31,9 +31,9 @@ def generate_mdx(pdf_file: Optional[bytes] = File(description="File to send")):
     return FileResponse(mdx_file, filename="generated.mdx")
 
 
-@router.get("/get-audio/")
-async def get_audio():
-    sound_generator("tu_palabra_aquí")  # Llamas a la función para generar el archivo
+@router.post("/get-audio/")
+async def get_audio(word:str):
+    sound_generator(word)  # Llamas a la función para generar el archivo
     file_path = "output.mp3"  # Ruta del archivo generado
     with open(file_path, "rb") as audio_file:
         audio_bytes = audio_file.read()
@@ -42,5 +42,6 @@ async def get_audio():
 
 
 @router.post("/text-card/")
-def get_text_card(word: str):
+def get_text_card(context: TextModel):
+    word = context.word
     return gemini_model.generate_text_card(word)
