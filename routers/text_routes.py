@@ -31,7 +31,7 @@ def generate_mdx(pdf_file: Optional[bytes] = File(description="File to send")):
     return FileResponse(mdx_file, filename="generated.mdx")
 
 
-@router.post("/get-audio/")
+@router.get("/get-audio/")
 async def get_audio(word: str):
     try:
         # Llama a la función para generar el archivo y obtiene la ruta del archivo
