@@ -1,13 +1,13 @@
 import sys
 import os
-from io import BytesIO
+import time
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(current_dir, '..'))
-
+import asyncio
 from utils import __annotations__
 from typing import Optional
 from fastapi import File, APIRouter
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.exceptions import HTTPException 
 from pydantic import BaseModel
 from pathlib import Path
@@ -32,14 +32,26 @@ def generate_mdx(pdf_file: Optional[bytes] = File(description="File to send")):
 
 
 @router.post("/get-audio/")
-async def get_audio(word:str):
-    sound_generator(word)  # Llamas a la función para generar el archivo
-    file_path = "output.mp3"  # Ruta del archivo generado
-    with open(file_path, "rb") as audio_file:
-        audio_bytes = audio_file.read()
-    Path(file_path).unlink()
-    return FileResponse(BytesIO(audio_bytes), media_type="audio/mpeg")
-
+async def get_audio(word: str):
+    try:
+        # Llama a la función para generar el archivo y obtiene la ruta del archivo
+        file_path = sound_generator(word)
+        
+        # Espera hasta que el archivo esté completamente guardado (espera un máximo de 5 segundos)
+        max_wait_time = 5  # segundos
+        wait_interval = 0.1  # segundos
+        waited_time = 0
+        while not os.path.exists(file_path) and waited_time < max_wait_time:
+            time.sleep(wait_interval)
+            waited_time += wait_interval
+        
+        # Verifica si el archivo existe después de la espera
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail="Archivo no encontrado")
+        return FileResponse(file_path, media_type="audio/mpeg")
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/text-card/")
 def get_text_card(context: TextModel):

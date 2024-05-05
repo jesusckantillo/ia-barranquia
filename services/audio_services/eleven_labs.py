@@ -27,4 +27,6 @@ def sound_generator(word:str,api_key=os.getenv("ELEVEN_API_KEY")):
             if chunk:
                 f.write(chunk)
 
+    return "output.mp3"
+
 sound_generator("Computer")
