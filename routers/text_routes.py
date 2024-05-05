@@ -31,11 +31,11 @@ def generate_mdx(pdf_file: Optional[bytes] = File(description="File to send")):
     return FileResponse(mdx_file, filename="generated.mdx")
 
 
-@router.post("/get-audio/")
-async def get_audio(context: WordToAudio):
+@router.get("/get-audio/")
+async def get_audio(word: str):
     try:
         # Llama a la función para generar el archivo y obtiene la ruta del archivo
-        file_path = sound_generator(context.word)
+        file_path = sound_generator(word)
         
         # Espera hasta que el archivo esté completamente guardado (espera un máximo de 5 segundos)
         max_wait_time = 5  # segundos
@@ -48,7 +48,7 @@ async def get_audio(context: WordToAudio):
         # Verifica si el archivo existe después de la espera
         if not os.path.exists(file_path):
             raise HTTPException(status_code=404, detail="Archivo no encontrado")
-        return FileResponse(file_path, media_type="audio/mp3")
+        return file_path
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
