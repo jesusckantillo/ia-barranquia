@@ -3,6 +3,6 @@ from pydantic import BaseModel
 from typing import List
 
 class TextCard(BaseModel):
-    audio: bytes
-    translations: List[str] = []
+    translations: str =""
+    pronuntations: str = ""
     examples: List[str] = []
