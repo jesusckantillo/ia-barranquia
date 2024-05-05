@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from pathlib import Path
 from services.ai_services.gemini_controller import  gemini_model
 from services.audio_services.eleven_labs import sound_generator
-from models.text.text_model import TextModel
+from models.text.text_model import TextModel, WordToAudio
 
 
 router = APIRouter()
@@ -32,10 +32,10 @@ def generate_mdx(pdf_file: Optional[bytes] = File(description="File to send")):
 
 
 @router.post("/get-audio/")
-async def get_audio(word: str):
+async def get_audio(context: WordToAudio):
     try:
         # Llama a la función para generar el archivo y obtiene la ruta del archivo
-        file_path = sound_generator(word)
+        file_path = sound_generator(context.word)
         
         # Espera hasta que el archivo esté completamente guardado (espera un máximo de 5 segundos)
         max_wait_time = 5  # segundos
