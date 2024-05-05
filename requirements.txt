@@ -16,16 +16,6 @@ opencv-python==4.9.0.80
 opt-einsum==3.3.0
 orjson==3.10.3
 packaging==24.0
-PAM==0.4.2
-pandas==2.2.2
-parso==0.8.4
-pexpect==4.8.0
-pillow==10.3.0
-praat-parselmouth==0.4.3
-prompt-toolkit==3.0.43
-proto-plus==1.23.0
-protobuf==4.25.3
-psutil==5.9.0
 
 
 pydantic==2.7.1
