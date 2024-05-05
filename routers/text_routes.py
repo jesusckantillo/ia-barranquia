@@ -48,7 +48,7 @@ async def get_audio(word: str):
         # Verifica si el archivo existe después de la espera
         if not os.path.exists(file_path):
             raise HTTPException(status_code=404, detail="Archivo no encontrado")
-        return file_path
+        return FileResponse(file_path, media_type="audio/mp3")
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
